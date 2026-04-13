@@ -1,40 +1,34 @@
 
 # OneNote Viewer
 
-A read-only desktop viewer for Microsoft OneNote notebook files (`.one`, `.onetoc2`) targeting Debian-based Linux distributions.
+[![CI](https://github.com/yourusername/onenote-viewer/actions/workflows/ci.yml/badge.svg)](https://github.com/yourusername/onenote-viewer/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Features
+A fast, native, **read-only** desktop viewer for Microsoft OneNote `*.one` notebook files on Linux.
 
-- 📖 **Read-Only Viewing**: Open and view OneNote notebooks exported from OneDrive/OneNote Web
-- 🌳 **Navigation Sidebar**: Browse Notebook → Sections → Pages hierarchy
-- 📝 **Rich Content Rendering**:
-  - Text with formatting (bold, italic, headers, lists)
+> ⚠️ **This is an unofficial app!** It is not affiliated with, endorsed by, or connected to Microsoft Corporation. OneNote is a trademark of Microsoft Corporation.
+
+## ✨ Features
+
+- 📂 **Open Notebooks**: Load `.onetoc2` notebook roots or standalone `.one` files
+- 🌳 **Hierarchical Sidebar**: Navigate Notebook → Sections → Pages
+- 📄 **Rich Content Rendering**:
+  - Text with basic formatting (bold, italic, lists, headers)
   - Embedded images displayed inline
-  - Attachments with icons and file information
-- 🎨 **Modern UI**: Built with GTK4 and libadwaita for native Linux integration
-- 🌓 **Theme Support**: Automatic light/dark mode following system preferences
-- ⚠️ **Graceful Degradation**: Skips unsupported content (ink, equations, encrypted pages) with user-friendly warnings
+  - Attachments with icons, filenames, and sizes (click to open)
+- 🎨 **Modern UI**: Built with GTK4 and libadwaita for a native GNOME experience
+- 🌓 **Theme Support**: Automatically follows system light/dark theme
+- ⚡ **Async Parsing**: Non-blocking background parsing for smooth UX
+- 🛡️ **Graceful Degradation**: Skips unsupported content (ink, equations, encrypted pages) with user-friendly warnings
+- 📦 **Debian Ready**: Pre-built `.deb` packages for Debian/Ubuntu (amd64, arm64)
 
-## Installation
+## 🖼️ Screenshots
 
-### From Source
+*(Add screenshots here once available)*
 
-```bash
-# Install dependencies
-sudo apt install libgtk-4-dev libadwaita-1-dev cargo rustc
+## 📥 Installation
 
-# Clone the repository
-git clone https://github.com/yourusername/onenote-viewer.git
-cd onenote-viewer
-
-# Build
-cargo build --release
-
-# Run
-./target/release/onenote-viewer
-```
-
-### From .deb Package
+### From .deb Package (Recommended)
 
 Download the latest `.deb` package from the [Releases](https://github.com/yourusername/onenote-viewer/releases) page and install:
 
@@ -42,166 +36,137 @@ Download the latest `.deb` package from the [Releases](https://github.com/yourus
 sudo apt install ./onenote-viewer_*.deb
 ```
 
-## Usage
+### Build from Source
 
-### GUI Mode
-Launch the application and use the file chooser to select a `.one` or `.onetoc2` file:
+#### Prerequisites
+
+Ensure you have the following installed:
+
+- Rust (1.70+ recommended)
+- GTK4 and libadwaita development libraries
+- Additional build dependencies
+
+**On Debian/Ubuntu:**
+
+```bash
+sudo apt update
+sudo apt install -y \
+    curl \
+    build-essential \
+    libgtk-4-dev \
+    libadwaita-1-dev \
+    pkg-config \
+    cargo-deb
+```
+
+**Install Rust (if not already installed):**
+
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+source $HOME/.cargo/env
+```
+
+#### Build Instructions
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/onenote-viewer.git
+cd onenote-viewer
+
+# Build in release mode
+cargo build --release
+
+# Run the application
+cargo run --release
+```
+
+#### Create .deb Package
+
+```bash
+cargo deb
+```
+
+The generated package will be in `target/debian/`.
+
+## 🚀 Usage
+
+### Launch the Application
 
 ```bash
 onenote-viewer
 ```
 
-### CLI Mode
-Open a file directly from the command line:
+### Open a File via CLI
 
 ```bash
 onenote-viewer /path/to/notebook.onetoc2
+# or
+onenote-viewer /path/to/page.one
 ```
 
-Or open a standalone section file:
+### Opening Files
 
-```bash
-onenote-viewer /path/to/section.one
-```
+1. Click the **"Open Notebook"** button or use `Ctrl+O`
+2. Navigate to your `.onetoc2` or `.one` file
+3. Browse the sidebar hierarchy and view page content
 
-## Supported Formats
+## 📁 Supported File Formats
 
 | Format | Description | Support Level |
 |--------|-------------|---------------|
-| `.onetoc2` | OneNote notebook table of contents | ✅ Full |
-| `.one` | OneNote section/page files | ✅ Full |
-| Legacy formats (2010 and earlier) | Older OneNote formats | ⚠️ Partial |
-| Encrypted notebooks | Password-protected notebooks | ❌ Not supported |
+| `.onetoc2` | OneNote Notebook Table of Contents | ✅ Full |
+| `.one` | OneNote Section/Page File | ✅ Full |
+| Legacy FSSHTTP (2010) | Older OneNote format | ⚠️ Partial (may skip some content) |
+| Encrypted/Password-protected | Password-locked notebooks | ❌ Not supported |
 
-## Content Support
+## ⚠️ Limitations
 
-| Content Type | Support |
-|--------------|---------|
-| Text runs | ✅ Yes |
-| Bold/Italic formatting | ✅ Yes |
-| Headers | ✅ Yes |
-| Lists (bulleted/numbered) | ✅ Yes |
-| Images | ✅ Yes |
-| Attachments | ✅ Yes (open with default app) |
-| Ink drawings | ❌ No |
-| Equations | ❌ No |
-| Audio/Video | ❌ No |
-| Tables | ⚠️ Basic support |
-
-## Building .deb Package
-
-```bash
-# Install cargo-deb
-cargo install cargo-deb
-
-# Build the package
-cargo deb
-
-# The .deb file will be in target/debian/
-```
-
-## Development
-
-### Project Structure
-
-```
-onenote-viewer/
-├── Cargo.toml          # Rust package manifest
-├── src/
-│   ├── main.rs         # Application entry point
-│   ├── app.rs          # Main application logic
-│   ├── parser.rs       # OneNote file parsing
-│   ├── utils.rs        # Utility functions
-│   └── ui/
-│       ├── mod.rs      # UI module exports
-│       ├── sidebar.rs  # Navigation sidebar
-│       └── content_view.rs  # Content rendering
-├── assets/
-│   ├── icons/          # Application icons
-│   └── onenote-viewer.desktop  # Desktop entry
-├── data/
-│   └── com.example.onenote-viewer.metainfo.xml  # AppStream metadata
-└── .github/
-    └── workflows/
-        └── ci.yml      # GitHub Actions CI
-```
-
-### Running Tests
-
-```bash
-cargo test
-```
-
-### Code Formatting
-
-```bash
-cargo fmt --check
-```
-
-### Linting
-
-```bash
-cargo clippy -- -D warnings
-```
-
-## Dependencies
-
-- **Rust** (2021 edition)
-- **GTK4** (`gtk4 = "0.9"`)
-- **libadwaita** (`libadwaita = "0.7"`)
-- **onenote_parser** (latest stable)
-- **tokio** (async runtime)
-
-## System Requirements
-
-- **OS**: Debian 12+, Ubuntu 22.04+, or compatible
-- **Architecture**: amd64, arm64
-- **RAM**: 256 MB minimum
-- **Disk**: 50 MB for installation
-
-## Limitations
-
-This is a **read-only viewer**. The following features are intentionally not supported:
+As a read-only viewer, this application does **not** support:
 
 - Editing or modifying notebooks
 - Saving changes
-- Cloud synchronization
-- Network connectivity
-- Password-protected notebooks
+- Syncing with OneDrive or OneNote Online
+- Rendering complex ink drawings or handwritten notes
+- Solving mathematical equations
+- Opening password-protected or encrypted notebooks
 
-## License
+Unsupported content is gracefully skipped with a non-blocking warning notification.
 
-MIT License - see [LICENSE](LICENSE) for details.
+## 🛠️ Technology Stack
 
-## Contributing
+- **Language**: Rust (2021 Edition)
+- **GUI Framework**: GTK4 + libadwaita (`gtk4-rs`)
+- **Parser**: [`onenote_parser`](https://crates.io/crates/onenote_parser)
+- **Async Runtime**: Tokio + GLib main context
+- **Packaging**: `cargo-deb`
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit issues, fork the repository, and send pull requests.
 
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## Troubleshooting
+Please ensure your code passes `cargo fmt` and `cargo clippy` before submitting.
 
-### Common Issues
+## 📄 License
 
-**"Failed to parse notebook"**
-- Ensure the file is a valid `.one` or `.onetoc2` format
-- Legacy formats (OneNote 2010 and earlier) may have limited support
-- Encrypted notebooks are not supported
+This project is licensed under the [MIT License](LICENSE).
 
-**Application won't start**
-- Verify GTK4 and libadwaita are installed: `sudo apt install libgtk-4-dev libadwaita-1-dev`
-- Check for missing dependencies: `ldd target/release/onenote-viewer`
+## 🙏 Acknowledgments
 
-**Images not displaying**
-- Some image formats may not be supported by GDK-Pixbuf
-- Try converting images to PNG or JPEG in the original notebook
+- Thanks to the [`onenote_parser`](https://crates.io/crates/onenote_parser) crate authors for the parsing library
+- Thanks to the [`gtk4-rs`](https://gtk-rs.org/) community for excellent GTK4 bindings
+- Inspired by the need for a native Linux OneNote viewer
 
-## Acknowledgments
+## 📬 Contact
 
-- Thanks to the [`onenote_parser`](https://crates.io/crates/onenote_parser) crate authors
-- Built with [`gtk4-rs`](https://gtk-rs.org/) bindings
-- Inspired by the need for Linux-compatible OneNote viewers
+- **Issues**: [GitHub Issues](https://github.com/yourusername/onenote-viewer/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/yourusername/onenote-viewer/discussions)
+
+---
+
+*Built with ❤️ for the Linux community*
