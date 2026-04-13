@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>com.example.onenote-viewer</id>
+  <metadata_license>MIT</metadata_license>
+  <project_license>MIT</project_license>
+  <name>OneNote Viewer</name>
+  <summary>Read-only viewer for Microsoft OneNote notebook files</summary>
+  
+  <description>
+    <p>
+      OneNote Viewer is a desktop application for viewing Microsoft OneNote notebook files 
+      (.one, .onetoc2) on Linux systems. It provides a clean, native interface for browsing 
+      notebooks exported from OneDrive or OneNote Web.
+    </p>
+    <p>
+      Features include:
+    </p>
+    <ul>
+      <li>Navigation sidebar showing Notebook → Sections → Pages hierarchy</li>
+      <li>Rich text rendering with support for bold, italic, headers, and lists</li>
+      <li>Embedded image display</li>
+      <li>Attachment viewing with file information</li>
+      <li>Automatic light/dark theme following system preferences</li>
+      <li>Graceful degradation for unsupported content types</li>
+    </ul>
+    <p>
+      This is a read-only viewer - no editing, saving, or cloud synchronization features 
+      are included.
+    </p>
+  </description>
+  
+  <launchable type="desktop-id">onenote-viewer.desktop</launchable>
+  
+  <screenshots>
+    <screenshot type="default">
+      <caption>Main window showing notebook navigation and content</caption>
+    </screenshot>
+  </screenshots>
+  
+  <url type="homepage">https://github.com/yourusername/onenote-viewer</url>
+  <url type="bugtracker">https://github.com/yourusername/onenote-viewer/issues</url>
+  <url type="donation">https://github.com/sponsors/yourusername</url>
+  
+  <provides>
+    <binary>onenote-viewer</binary>
+  </provides>
+  
+  <recommends>
+    <control>keyboard</control>
+    <control>pointing</control>
+  </recommends>
+  
+  <requires>
+    <display_length compare="ge">800</display_length>
+  </requires>
+  
+  <support_url>https://github.com/yourusername/onenote-viewer/discussions</support_url>
+  
+  <content_rating type="oars-1.1"/>
+  
+  <releases>
+    <release version="0.1.0" date="2024-01-01">
+      <description>
+        <p>Initial release</p>
+        <ul>
+          <li>Basic notebook parsing and navigation</li>
+          <li>Text rendering with formatting support</li>
+          <li>Image and attachment display</li>
+          <li>GTK4/libadwaita modern UI</li>
+          <li>Debian packaging support</li>
+        </ul>
+      </description>
+    </release>
+  </releases>
+  
+  <developer_name>Your Name</developer_name>
+  
+  <update_contact>your.email@example.com</update_contact>
+  
+  <translation type="gettext">onenote-viewer</translation>
+  
+  <custom>
+    <setting key="org.gnome.desktop.interface">color-scheme</setting>
+  </custom>
+</component>
